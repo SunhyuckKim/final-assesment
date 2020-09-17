@@ -70,7 +70,16 @@ data:
     DB_PASSWORD: skccadmin
 ...
 ```
-
+application.yml 설정
+```
+...
+  datasource:
+    url: jdbc:mariadb://${DB_URL}/${DB_NAME}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+...
+```
 
 ![pvc](https://user-images.githubusercontent.com/68723566/93423708-89260b00-f8f1-11ea-89e5-0eb1bfab93a3.png)
 
