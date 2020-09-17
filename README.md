@@ -2,8 +2,8 @@
 
 구현 Repository
 
-<img width="926" alt="스크린샷 2020-09-17 오후 1 24 48" src="https://user-images.githubusercontent.com/68723566/93420243-86271c80-f8e9-11ea-9a2e-88279282273d.png">
-<img width="929" alt="스크린샷 2020-09-17 오후 1 25 30" src="https://user-images.githubusercontent.com/68723566/93420251-87f0e000-f8e9-11ea-8db5-ed01ce595944.png">
+<img width="400" alt="스크린샷 2020-09-17 오후 1 24 48" src="https://user-images.githubusercontent.com/68723566/93420243-86271c80-f8e9-11ea-9a2e-88279282273d.png">
+<img width="400" alt="스크린샷 2020-09-17 오후 1 25 30" src="https://user-images.githubusercontent.com/68723566/93420251-87f0e000-f8e9-11ea-8db5-ed01ce595944.png">
 
 ## 개인 AWS계정에 팀과제 및 개인과제 추가된 내용이 EKS 배포 됨을 확인
 <img width="800" alt="스크린샷 2020-09-17 오전 11 17 32" src="https://user-images.githubusercontent.com/68723566/93420710-7cea7f80-f8ea-11ea-891e-b8b1a4b2d2fe.png">
