@@ -72,6 +72,9 @@ data:
 ```
 
 
+![pvc](https://user-images.githubusercontent.com/68723566/93423708-89260b00-f8f1-11ea-89e5-0eb1bfab93a3.png)
+
+
 ## 12.Liveness Probe 적용
 
 - Liveness Probe를 통해 특정 경로밑에 파일이 존재하는지 확인 하면서 컨테이너가 동작 중인지 여부를 판단한다. 
