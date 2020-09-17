@@ -84,10 +84,10 @@ public interface TelegramService {
 
         game.external.KakaoTalk kakaoTalk = new game.external.KakaoTalk();
         // mappings goes here
-        kakaoTalk.setId(this.getId());
-        kakaoTalk.setStatus("send message!!!!");
-        GiftApplication.applicationContext.getBean(game.external.KakaoTalkService.class)
-                .use(kakaoTalk);
+        telegram.setId(this.getId());
+        telegram.setStatus("send message!!!!");
+        GiftApplication.applicationContext.getBean(game.external.TelegramService.class)
+                .use(telegram);
     }
 ```
 
