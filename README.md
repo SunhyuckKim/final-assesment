@@ -47,6 +47,16 @@ build script는 각 프로젝트 루트 경로에 buildspec.yml에 포함함
 
 ## 10. ConfigMap/Persistence Volume 적용
 
+
+Java application.yml 환경변수 적용을 위해 ConfigMap 설정
+...
+  datasource:
+    url: jdbc:mariadb://${DB_URL}/${DB_NAME}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+...
+
 pvc 적용
 ![pvc](https://user-images.githubusercontent.com/68723566/93421409-3c8c0100-f8ec-11ea-8d6b-880fda99e3f6.png)
 
