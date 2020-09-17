@@ -50,8 +50,22 @@ build script는 각 프로젝트 루트 경로에 buildspec.yml에 포함함
 pvc 적용
 ![pvc](https://user-images.githubusercontent.com/68723566/93421409-3c8c0100-f8ec-11ea-8d6b-880fda99e3f6.png)
 
+![pvc](https://user-images.githubusercontent.com/68723566/93423025-fa64be80-f8ef-11ea-8b4a-9e171e4dbd46.png)
+![pvc](https://user-images.githubusercontent.com/68723566/93423039-fe90dc00-f8ef-11ea-829e-dbe7e248c889.png)
 
 ## 11.Polyglot 적용
+
+* Polyglot 설정을 위해 구성한 amazon rds 의 db서버 정보를 configmap으로 구성했다.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: db-config
+    namespace: game
+data:
+    DB_URL: admin08-mariadb.cuy0kl2qzoel.ap-northeast-2.rds.amazonaws.com:3306 
+    DB_USER: admin
+    DB_PASSWORD: skccadmin
 
 
 
