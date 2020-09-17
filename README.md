@@ -21,9 +21,10 @@
 ## Saga
 
 시나리오: Mission -> reward -> Mission Update -> telegram -> Mission
-![telegram](https://user-images.githubusercontent.com/68723566/93427997-b676b700-f8f9-11ea-84a6-454b5d692b4c.png)
-![telegram](https://user-images.githubusercontent.com/68723566/93428006-b8d91100-f8f9-11ea-957e-68acdfc45204.png)
+
 ![telegram](https://user-images.githubusercontent.com/68723566/93428011-baa2d480-f8f9-11ea-92f7-0203bdcae15c.png)
+![telegram](https://user-images.githubusercontent.com/68723566/93428006-b8d91100-f8f9-11ea-957e-68acdfc45204.png)
+![telegram](https://user-images.githubusercontent.com/68723566/93427997-b676b700-f8f9-11ea-84a6-454b5d692b4c.png)
 
 
 ## CQRS
