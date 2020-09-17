@@ -57,6 +57,8 @@ pvc 적용
 
 * Polyglot 설정을 위해 구성한 amazon rds 의 db서버 정보를 configmap으로 구성했다.
 
+```
+...
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -66,7 +68,8 @@ data:
     DB_URL: admin08-mariadb.cuy0kl2qzoel.ap-northeast-2.rds.amazonaws.com:3306 
     DB_USER: admin
     DB_PASSWORD: skccadmin
-
+...
+```
 
 
 ## 12.Liveness Probe 적용
