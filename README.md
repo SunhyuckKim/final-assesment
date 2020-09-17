@@ -9,7 +9,7 @@
 <img width="800" alt="스크린샷 2020-09-17 오전 11 17 32" src="https://user-images.githubusercontent.com/68723566/93420710-7cea7f80-f8ea-11ea-891e-b8b1a4b2d2fe.png">
 
 
-### 1. 이벤트 스토밍
+### 이벤트 스토밍
 
 ## 팀과제 완성된 모형
 ![image](https://user-images.githubusercontent.com/68723566/93046088-ecb2fd00-f693-11ea-836f-bd166b106df1.png)
@@ -18,10 +18,82 @@
 고객이 받은 리워드로 교환한 gift에 대한 내역을 특정 메신저(텔레그램)를 통해 전달하는 기능 추가
 ![telegram](https://user-images.githubusercontent.com/68723566/93420391-c1295000-f8e9-11ea-9179-a8549d15b53f.JPG)
 
+## Saga
+
+시나리오: Mission -> reward -> Mission Update -> telegram -> Mission
+![telegram](https://user-images.githubusercontent.com/68723566/93427997-b676b700-f8f9-11ea-84a6-454b5d692b4c.png)
+![telegram](https://user-images.githubusercontent.com/68723566/93428006-b8d91100-f8f9-11ea-957e-68acdfc45204.png)
+![telegram](https://user-images.githubusercontent.com/68723566/93428011-baa2d480-f8f9-11ea-92f7-0203bdcae15c.png)
+
+
+## CQRS
+
+Database 조회 업무만을 수행하기 위한 mypage 개발
+1. 소스
+```
+  profiles: docker
+  datasource:
+    url: jdbc:mariadb://${DB_URL}/admin06_mariadb?useUnicode=yes&characterEncoding=UTF-8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+```
+```
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenExchanged_then_UPDATE_Used(@Payload Used used) {
+        try {
+            if (used.isMe()) {
+                // view 객체 조회
+                List<Mypage> mypageList = mypageRepository.findByRewardId(used.getId());
+                for(Mypage mypage : mypageList){
+                    // view 객체에 이벤트의 eventDirectValue 를 set 함
+                    mypage.setTelegramStatus(used.getStatus());
+                    // view 레파지 토리에 save
+                    mypageRepository.save(mypage);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+```
+![telegram](https://user-images.githubusercontent.com/68723566/93428557-a6aba280-f8fa-11ea-8563-524a8f51d955.png)
 
 
 
-### 4. 게이트웨이
+## 동기식 호출 과 Fallback 처리
+
+gift를 사용하면 Telegram으로 Request/Response됨 
+
+- Telegram 서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
+
+gift 시스템 TelegramService.java
+```
+@FeignClient(name="telegram", url="${api.url.telegram}", fallback=TelegramServiceFallback.class)
+public interface TelegramService {
+    @RequestMapping(method= RequestMethod.GET, path="/telegram")
+    public void use(@RequestBody Telegram telegram);
+}
+```
+
+```
+# Gift.java (Entity)
+
+    @PostPersist
+    public void onPostPersist(){
+
+        game.external.KakaoTalk kakaoTalk = new game.external.KakaoTalk();
+        // mappings goes here
+        kakaoTalk.setId(this.getId());
+        kakaoTalk.setStatus("send message!!!!");
+        GiftApplication.applicationContext.getBean(game.external.KakaoTalkService.class)
+                .use(kakaoTalk);
+    }
+```
+
+
+
+### 게이트웨이
 
 
 #istio Virtual Service에 telegram path 추가함
@@ -35,17 +107,17 @@
 ![yml](https://user-images.githubusercontent.com/68723566/93420504-03eb2800-f8ea-11ea-99c1-c25004d7a83e.png)
 
 
-## 6. CI/CD 적용
+## CI/CD 적용
 
 AWS Codebuild를 통한 webhook 빌드 기능 적용
 build script는 각 프로젝트 루트 경로에 buildspec.yml에 포함함
 ![cicd](https://user-images.githubusercontent.com/68723566/93420805-b28f6880-f8ea-11ea-9888-6739b9c864f2.png)
 
 
-## 8. Autoscale out 적용
+## Autoscale out 적용
+test중 
 
-
-## 10. ConfigMap/Persistence Volume 적용
+## ConfigMap/Persistence Volume 적용
 
 
 Java application.yml 환경변수 적용을 위해 ConfigMap 설정
@@ -81,7 +153,7 @@ pvc 적용
 ![pvc](https://user-images.githubusercontent.com/68723566/93423025-fa64be80-f8ef-11ea-8b4a-9e171e4dbd46.png)
 ![pvc](https://user-images.githubusercontent.com/68723566/93423039-fe90dc00-f8ef-11ea-829e-dbe7e248c889.png)
 
-## 11.Polyglot 적용
+## Polyglot 적용
 
 * Polyglot 설정을 위해 구성한 amazon rds 의 db서버 정보를 configmap으로 구성했다.
 
@@ -112,7 +184,7 @@ application.yml 설정
 ![pvc](https://user-images.githubusercontent.com/68723566/93423708-89260b00-f8f1-11ea-89e5-0eb1bfab93a3.png)
 
 
-## 12.Liveness Probe 적용
+## Liveness Probe 적용
 
 - Liveness Probe를 통해 특정 경로밑에 파일이 존재하는지 확인 하면서 컨테이너가 동작 중인지 여부를 판단한다. 
 
