@@ -25,15 +25,15 @@
 
 
 #istio Virtual Service에 telegram path 추가함
-<img width="400" alt="스크린샷 2020-09-17 오전 11 50 33" src="https://user-images.githubusercontent.com/68723566/93420493-fdf54700-f8e9-11ea-9968-9195e4b00d6f.png">
+!<img width="400" alt="스크린샷 2020-09-17 오전 11 50 33" src="https://user-images.githubusercontent.com/68723566/93420493-fdf54700-f8e9-11ea-9968-9195e4b00d6f.png">
 
 
 #설치된 istio확인
-<img width="400" alt="스크린샷 2020-09-17 오전 11 57 57" src="https://user-images.githubusercontent.com/68723566/93420501-0188ce00-f8ea-11ea-8dd7-4159ae11892b.png">
+!<img width="400" alt="스크린샷 2020-09-17 오전 11 57 57" src="https://user-images.githubusercontent.com/68723566/93420501-0188ce00-f8ea-11ea-8dd7-4159ae11892b.png">
 
 
 #적용된 yml 확인
-<img width="400" alt="스크린샷 2020-09-17 오후 1 16 38" src="https://user-images.githubusercontent.com/68723566/93420504-03eb2800-f8ea-11ea-99c1-c25004d7a83e.png">
+!<img width="400" alt="스크린샷 2020-09-17 오후 1 16 38" src="https://user-images.githubusercontent.com/68723566/93420504-03eb2800-f8ea-11ea-99c1-c25004d7a83e.png">
 
 ## 6. CI/CD 적용
 
