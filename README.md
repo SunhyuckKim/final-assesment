@@ -118,7 +118,7 @@ public class MessageUpdated extends AbstractEvent{
     }
 ```
 
--  PolicyHandler.java에 텔레그램 
+-  PolicyHandler.java에 텔레그램 관련 로직 
 ```
 package game;
 
