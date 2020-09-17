@@ -25,32 +25,31 @@
 
 
 #istio Virtual Service에 telegram path 추가함
-!<img width="400" alt="스크린샷 2020-09-17 오전 11 50 33" src="https://user-images.githubusercontent.com/68723566/93420493-fdf54700-f8e9-11ea-9968-9195e4b00d6f.png">
-
+![path](https://user-images.githubusercontent.com/68723566/93420493-fdf54700-f8e9-11ea-9968-9195e4b00d6f.png)
 
 #설치된 istio확인
-!<img width="400" alt="스크린샷 2020-09-17 오전 11 57 57" src="https://user-images.githubusercontent.com/68723566/93420501-0188ce00-f8ea-11ea-8dd7-4159ae11892b.png">
+![istio](https://user-images.githubusercontent.com/68723566/93420501-0188ce00-f8ea-11ea-8dd7-4159ae11892b.png)
 
 
 #적용된 yml 확인
-!<img width="400" alt="스크린샷 2020-09-17 오후 1 16 38" src="https://user-images.githubusercontent.com/68723566/93420504-03eb2800-f8ea-11ea-99c1-c25004d7a83e.png">
+![yml](https://user-images.githubusercontent.com/68723566/93420504-03eb2800-f8ea-11ea-99c1-c25004d7a83e.png)
+
 
 ## 6. CI/CD 적용
 
 AWS Codebuild를 통한 webhook 빌드 기능 적용
 build script는 각 프로젝트 루트 경로에 buildspec.yml에 포함함
-<img width="800" alt="스크린샷 2020-09-17 오전 11 44 58" src="https://user-images.githubusercontent.com/68723566/93420805-b28f6880-f8ea-11ea-9888-6739b9c864f2.png">
+![cicd](https://user-images.githubusercontent.com/68723566/93420805-b28f6880-f8ea-11ea-9888-6739b9c864f2.png)
 
 
 ## 8. Autoscale out 적용
 
 
-<img width="800" alt="스크린샷 2020-09-17 오전 11 44 58" src="https://user-images.githubusercontent.com/68723566/93420805-b28f6880-f8ea-11ea-9888-6739b9c864f2.png">
-
 ## 10. ConfigMap/Persistence Volume 적용
 
 pvc 적용
-<img width="902" alt="스크린샷 2020-09-17 오후 1 45 19" src="https://user-images.githubusercontent.com/68723566/93421409-3c8c0100-f8ec-11ea-8d6b-880fda99e3f6.png">
+![pvc](https://user-images.githubusercontent.com/68723566/93421409-3c8c0100-f8ec-11ea-8d6b-880fda99e3f6.png)
+
 
 ## 11.Polyglot 적용
 
