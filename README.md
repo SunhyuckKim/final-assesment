@@ -16,11 +16,172 @@
 
 ## 개인과제 추가된 모형
 고객이 받은 리워드로 교환한 gift에 대한 내역을 특정 메신저(텔레그램)를 통해 전달하는 기능 추가
-![telegram](https://user-images.githubusercontent.com/68723566/93420391-c1295000-f8e9-11ea-9179-a8549d15b53f.JPG)
+
+# 시나리오 
+- Mission 달성 시 Reward를 지급 받아 Mission Table이 수정되면 Telegramdmfh 이벤트를 전달한다.
+- 새로운 Application인 Telegram은 전달받은 이벤트를 통해 사용자에게 메시지를 전달해준다.
+- 메시지 전송이 완료되면 다시 Mission시스템이 이벤트를 통해 알려준다
+- gift를 사용하면 텔레그램 메신저에 Request/Response 로 보내준다
+![telegram](https://user-images.githubusercontent.com/68723566/93432246-343dc100-f900-11ea-8627-978191ac2670.png)
+
+변경된 소스코드
+- Mission 서비스에 MissionUpdated.java, MessageUpdated.java 추가
+```
+package game;
+
+public class MissionUpdated  extends AbstractEvent{
+    private Long id;
+    private String status;
+    private Long rewardId;
+    private Long customerId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getRewardId() {
+        return rewardId;
+    }
+
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+}
+
+
+package game;
+
+public class MessageUpdated extends AbstractEvent{
+    private Long id;
+    private Long missionId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getMissionId() {
+        return missionId;
+    }
+
+    public void setMissionId(Long missionId) {
+        this.missionId = missionId;
+    }
+}
+
+```
+- Mission 서비스에 PostUpdate코드 추가(Mission.java) 
+```
+    @PostUpdate
+    public void onPostUpdate(){
+        MissionUpdated missionUpdated = new MissionUpdated();
+//        BeanUtils.copyProperties(this, missionUpdated);
+        missionUpdated.setCustomerId(this.customerId);
+        missionUpdated.setId(this.id);
+        missionUpdated.setRewardId(this.rewardId);
+        missionUpdated.setStatus(this.status);
+        missionUpdated.publishAfterCommit();
+   }
+```
+- Mission PolicyHandler.java 코드 추가
+```
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverMessageUpdated_SendMessage(@Payload MessageUpdated messageUpdated){
+
+        // 메시지 업데이트 확인로직
+        //
+        if(messageUpdated.isMe()){
+            System.out.println("##### listener SendMessage : " + messageUpdated.toJson());
+        }
+    }
+```
+
+-  PolicyHandler.java에 텔레그램 
+```
+package game;
+
+import game.config.kafka.KafkaProcessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PolicyHandler{
+    @Autowired
+    TelegramRepository telegramRepository;
+    @StreamListener(KafkaProcessor.INPUT)
+    public void onStringEventListener(@Payload String eventString){
+
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverMissionUpdated_Alert(@Payload MissionUpdated missionUpdated){
+
+
+        if(missionUpdated.isMe()){
+            telegram telegram = new Telegram();
+            telegram.setMissionId(missionUpdated.getId());
+            telegram.setStatus(missionUpdated.getStatus());
+
+            telegramRepository.save(telegram);
+            ### 텔레그램 메신저를 보내는 로직 ###
+            #                         
+            #
+            System.out.println("##### listener Alert : " + missionUpdated.toJson());
+        }
+    }
+
+}
+
+```
+- Gift 에서 telegram 서비스로 Request/Response 로직 추가 (TelegramService.java)
+```
+package game.external;
+
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@FeignClient(name="telegram", url="${api.url.telegram}", fallback=telegramServiceFallback.class)
+public interface KakaoTalkService {
+    @RequestMapping(method= RequestMethod.GET, path="/telegram")
+    public void use(@RequestBody telegram kakaoTalk);
+}
+
+```
+- Mypage 에서 telegram 관련 코드 추가 
+
 
 ## Saga
 
-시나리오: Mission -> reward -> Mission Update -> telegram -> Mission
+시나리오: Mission -> reward -> Mission Update -> telegram -> Message update 이벤트 -> Mission
 
 ![telegram](https://user-images.githubusercontent.com/68723566/93428011-baa2d480-f8f9-11ea-92f7-0203bdcae15c.png)
 ![telegram](https://user-images.githubusercontent.com/68723566/93428006-b8d91100-f8f9-11ea-957e-68acdfc45204.png)
@@ -83,7 +244,7 @@ public interface TelegramService {
     @PostPersist
     public void onPostPersist(){
 
-        game.external.KakaoTalk kakaoTalk = new game.external.KakaoTalk();
+        game.external.telegram telegram = new game.external.telegram();
         // mappings goes here
         telegram.setId(this.getId());
         telegram.setStatus("send message!!!!");
